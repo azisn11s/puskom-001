@@ -37,6 +37,9 @@ class RolesSeeder extends Seeder
             [
                 'name' => 'Super Admin',
                 'slug' => 'super-admin',
+            ],[
+                'name' => 'Guest',
+                'slug' => 'guest',
             ]
         ]);
     }

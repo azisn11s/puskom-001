@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 
 // Auth
 Route::post('login', [LoginController::class, 'login']);
+Route::post('signup', RegisterController::class);
+
 
 // Should authenticated
 Route::middleware(['auth:api'])->group(function(){

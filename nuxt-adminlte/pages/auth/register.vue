@@ -2,7 +2,12 @@
 	<div class="register-box">
 		<div class="card card-outline card-primary">
 			<div class="card-header text-center">
-				<a href="../../index2.html" class="h1"><b>Admin</b>LTE</a>
+				<img
+					src="~static/upcore/icons/UPCORE1024px.png"
+					alt="UpCore001 Logo"
+					class="brand-image"
+					style="opacity: 0.8; width: 70%;"
+				/>
 			</div>
 			<div class="card-body">
 				<p class="login-box-msg">Register a new membership</p>
@@ -12,31 +17,16 @@
 						<input
 							type="text"
 							class="form-control"
-							placeholder="Fist name"
-							v-model="register.firstname"
-							:class="{ 'is-invalid': register.errors.has('firstname') }"
+							placeholder="Username"
+							v-model="register.username"
+							:class="{ 'is-invalid': register.errors.has('username') }"
 						/>
 						<div class="input-group-append">
 							<div class="input-group-text">
 								<span class="fas fa-user"></span>
 							</div>
 						</div>
-						<has-error :form="register" field="firstname"></has-error>
-					</div>
-					<div class="input-group mb-3">
-						<input
-							type="text"
-							class="form-control"
-							placeholder="Last name"
-							v-model="register.lastname"
-							:class="{ 'is-invalid': register.errors.has('lastname') }"
-						/>
-						<div class="input-group-append">
-							<div class="input-group-text">
-								<span class="fas fa-user"></span>
-							</div>
-						</div>
-						<has-error :form="register" field="lastname"></has-error>
+						<has-error :form="register" field="username"></has-error>
 					</div>
 					<div class="input-group mb-3">
 						<input
@@ -140,8 +130,7 @@ export default {
 	data() {
 		return {
 			register: new Form({
-				firstname: "",
-				lastname: "",
+				username: "",
 				email: "",
 				password: "",
 				password_confirmation: "",
@@ -151,11 +140,11 @@ export default {
 	methods: {
 		async userRegister() {
 			try {
-                let response = await this.$axios.post(`/register`, this.register);
+                let response = await this.$axios.post(`/signup`, this.register);
 
 				this.$auth.setUserToken(response.data.access_token).then(()=> {
 
-					this.$toast.success(`Successfully registered.`, {
+					this.$toast.success(`Successfully registered. Please login!`, {
 						icon: "check",
 						iconPack: "fontawesome",
 						duration: 5000,
