@@ -11,8 +11,7 @@
 
 This project is very easy to install and deploy in a Docker container.
 
-By default, the Docker will expose port `9004`, so change this within the
-`docker-compose-LOCAL.yml` (Development) or `docker-compose.yml` (Production) and several `Dockerfile` if necessary. When ready, simply use the Dockerfile to
+By default, the Docker will expose port `9004`, so change this within the `docker-compose.yml` and several `Dockerfile` if necessary. When ready, simply use the Dockerfile to
 build the image.
 ##### _in the root project-directory_
 ```sh
@@ -25,6 +24,10 @@ your preferred browser.
 
 ```sh
 http://localhost:9004
+
+username: admin
+email: admin@mail.com
+password: admin123
 ```
 
 ## Installation Backend (Manually)
