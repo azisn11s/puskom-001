@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [LoginController::class, 'login']);
 
 // Should authenticated
-Route::middleware(['auth:sanctum'])->group(function(){
+Route::middleware(['auth:api'])->group(function(){
 
     Route::get('user', [UserController::class, 'me']);
 

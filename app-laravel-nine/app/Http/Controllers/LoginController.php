@@ -12,14 +12,12 @@ class LoginController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            $user = User::whereEmail($request->email)->first();
-            $token = $user->createToken($request->email);
+        if ($token = Auth::attempt($credentials)) {
 
             return response()->json([
                 'success'=> true,
                 'message'=> 'Logged in successfully.',
-                'access_token'=> $token->plainTextToken,
+                'access_token'=> $token,
                 'token_type'=> 'bearer'
             ]);
         }
