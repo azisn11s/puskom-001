@@ -103,6 +103,7 @@ class UserController extends Controller
     {
         $user = User::query()->with([
             'roles', 
+            'userDetail'
         ])
         ->find($user->id);
 
@@ -187,7 +188,7 @@ class UserController extends Controller
             }
 
             if (!$user->userDetail) {
-                $newUserDetail = new UserDetail($inputUserDetail);
+                $newUserDetail = UserDetail::create($inputUserDetail);
                 $user->userDetail()->associate($newUserDetail)->save();
             }
 

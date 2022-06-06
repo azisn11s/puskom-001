@@ -111,36 +111,234 @@
 				</div>
 			</div>
 
-			<!-- <div class="col-md-6">
+
+			<div class="col-md-6">
 				<div class="card card-info">
 					<div class="card-header">
-						<h3 class="card-title">Associated Employee</h3>
+						<h3 class="card-title">User Detail</h3>
 					</div>
 						<div class="card-body">
 
 							<div class="row">
 								<div class="col-12 col-sm-12">
 									<div class="form-group">
-										<label>Employee</label>
-										<v-select 
-											@open="onOpenEmployees" @search="fetchEmployeeOptions" 
-											:options="employees"
-											v-model="selectedEmployee"
-											:class="{'is-invalid': formErrors.has('employee_id')}"
-											placeholder="Select an employee"
-											>
-											<template v-slot:option="option">
-												<div><strong>{{ option.label }}</strong></div> 
-												<div class="text-muted">(Emp. Code {{ option.employee_code }}) at {{ option.company_name }}</div>
-											</template>
-										</v-select>
-										<has-error :form="form" field="employee_id"></has-error>
+										<label>Identity Number</label>
+										<input
+											v-model="form.identity_number"
+											type="text"
+											class="form-control"
+											id="identity_number"
+											placeholder="Identity Number"
+											:class="{ 'is-invalid': form.errors.has('identity_number') }"
+										/>
+										<has-error :form="form" field="identity_number"></has-error>
 									</div>
 								</div>
 							</div>
+							<div class="row">
+								<div class="col-6 col-sm-6">
+									<div class="form-group">
+										<label>First Name</label>
+										<input
+											v-model="form.first_name"
+											type="text"
+											class="form-control"
+											id="first_name"
+											placeholder="First Name"
+											:class="{ 'is-invalid': form.errors.has('first_name') }"
+										/>
+										<has-error :form="form" field="first_name"></has-error>
+									</div>
+								</div>
+								<div class="col-6 col-sm-6">
+									<div class="form-group">
+										<label>Last Name</label>
+										<input
+											v-model="form.last_name"
+											type="text"
+											class="form-control"
+											id="last_name"
+											placeholder="Last Name"
+											:class="{ 'is-invalid': form.errors.has('last_name') }"
+										/>
+										<has-error :form="form" field="last_name"></has-error>
+									</div>
+								</div>
+
+								
+							</div>
+
+							<div class="form-group row">
+								<label class="col-sm-3 col-form-label">Gender</label>
+								<div class="col-sm-4">
+									<div
+										class="custom-control custom-radio"
+										:class="{
+											'is-invalid': form.errors.has('gender'),
+										}"
+									>
+										<input
+											v-model="form.gender"
+											value="M"
+											class="
+												custom-control-input
+												custom-control-input-primary
+												custom-control-input-outline
+											"
+											type="radio"
+											id="gender-male"
+											name="gender"
+										/>
+										<label
+											for="gender-male"
+											class="custom-control-label"
+										>
+											Male</label
+										>
+									</div>
+									<div
+										class="custom-control custom-radio"
+										:class="{
+											'is-invalid': form.errors.has('gender'),
+										}"
+									>
+										<input
+											v-model="form.gender"
+											value="F"
+											class="
+												custom-control-input
+												custom-control-input-primary
+												custom-control-input-outline
+											"
+											type="radio"
+											id="gender-female"
+											name="gender"
+										/>
+										<label
+											for="gender-female"
+											class="custom-control-label"
+										>
+											Female</label
+										>
+									</div>
+									<has-error :form="form" field="gender"></has-error>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label 
+											>Date of Birth</label
+										>
+										<date-picker
+											name="birth_date"
+											:input-class="{
+												'form-control': true,
+												'is-invalid': form.errors.has('birth_date'),
+											}"
+											placeholder="Click to select date"
+											format="d MMMM yyyy"
+											minimum-view="day"
+											maximum-view="year"
+											:monday-first="true"
+											v-model="form.birth_date"
+											:typeable="false"
+											:clear-button="true"
+											clear-button-icon="fa fa-times"
+											:bootstrap-styling="true"
+										>
+											<has-error
+												slot="afterDateInput"
+												:form="form"
+												field="birth_date"
+											></has-error>
+										</date-picker>
+									</div>
+								</div>								
+							</div>
+
+							<div class="row">
+								<div class="col-6 col-sm-6">
+									<div class="form-group">
+										<label>Birth Place</label>
+										<input
+											v-model="form.birth_place"
+											type="text"
+											class="form-control"
+											id="birth_place"
+											placeholder="Birth Place"
+											:class="{ 'is-invalid': form.errors.has('birth_place') }"
+										/>
+										<has-error :form="form" field="birth_place"></has-error>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-6 col-sm-6">
+									<div class="form-group">
+										<label>Religion</label>
+										<input
+											v-model="form.religion"
+											type="text"
+											class="form-control"
+											id="religion"
+											placeholder="Religion"
+											:class="{ 'is-invalid': form.errors.has('religion') }"
+										/>
+										<has-error :form="form" field="religion"></has-error>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-6 col-sm-6">
+									<div class="form-group">
+										<label>Phone Number</label>
+										<input
+											v-model="form.phone_number"
+											type="text"
+											class="form-control"
+											id="phone_number"
+											placeholder="Phone Number"
+											:class="{ 'is-invalid': form.errors.has('phone_number') }"
+										/>
+										<has-error :form="form" field="phone_number"></has-error>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-6 col-sm-6">
+									<div class="form-group">
+										<label>Address</label>
+										<textarea class="form-control" v-model="form.full_address"></textarea>
+										<has-error :form="form" field="phone_number"></has-error>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-6 col-sm-6">
+									<div class="form-group">
+										<label>Zip Code</label>
+										<input
+											v-model="form.zip_code"
+											type="text"
+											class="form-control"
+											id="zip_code"
+											placeholder="Zip Code"
+											:class="{ 'is-invalid': form.errors.has('zip_code') }"
+										/>
+										<has-error :form="form" field="zip_code"></has-error>
+									</div>
+								</div>
+							</div>
+
 						</div>
 				</div>
-			</div> -->
+			</div>
 		</div>
 	</div>
 </template>
@@ -151,7 +349,11 @@ import Form from "vform";
 export default {
 	data(){
 		return {
-			employees: []
+			employees: [],
+			modelConfig: {
+				type: "string",
+				mask: "YYYY-MM-DD", // Uses 'iso' if missing
+			},
 		}
 	},
 
@@ -159,6 +361,8 @@ export default {
 		const user = await $axios.get(`admin/users/${params.id}`).then((resp)=> {
 			return resp.data.data;
 		});
+
+		const userDetail = user.user_detail || {};
 
 		const listOfRoles = await $axios.get(`admin/roles`, {
 			params: {
@@ -185,7 +389,18 @@ export default {
 				role: '',
 				password: '',
 				password_confirmation: '',
-				employee_id: selectedEmployee.length ? selectedEmployee[0].code : ''
+				employee_id: selectedEmployee.length ? selectedEmployee[0].code : '',
+
+				identity_number: userDetail.identity_number,
+				first_name: userDetail.first_name,
+				last_name: userDetail.last_name,
+				gender: userDetail.gender,
+				birth_date: userDetail.birth_date,
+				birth_place: userDetail.birth_place,
+				religion: userDetail.religion,
+				phone_number: userDetail.phone_number,
+				full_address: userDetail.full_address,
+				zip_code: userDetail.zip_code
 			}),
 			selectedEmployee
 		}
