@@ -71,13 +71,8 @@ export default {
                         return (this.pageIndex - 1) * this.pageSize + 1 + rowIndex;
 					}					
 				},
-				{ field: "name", key: "b", title: "Fullname", align: "left", sortBy: "" },
+				{ field: "username", key: "b", title: "Username", align: "left", sortBy: "" },
 				{ field: "email", key: "c", title: "Email", align: "left" },
-				{ field: "user_id", key: "g", title: "Employee Code", align: "center", 
-				renderBodyCell: ({ row, column, rowIndex }, h) => {
-                        return row['employee'] ? row['employee'].employee_code : "-";
-					} 
-				},
 				{
 					field: "created_at",
 					key: "d",

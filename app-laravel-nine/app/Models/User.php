@@ -18,7 +18,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
         'password',
     ];
@@ -108,19 +108,12 @@ class User extends Authenticatable implements JWTSubject
      */
     public function subscriptions()
     {
-        return $this->belongsToMany(Employee::class, 'employee_subscriptions')
-            ->withPivot(['valid_until'])
-            ->withTimestamps();
+        return null;
+        // return $this->belongsToMany(Employee::class, 'employee_subscriptions')
+        //     ->withPivot(['valid_until'])
+        //     ->withTimestamps();
     }
 
-    /**
-     * Has one employee
-     * 
-     */
-    public function employee()
-    {
-        return $this->hasOne(Employee::class);
-    }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

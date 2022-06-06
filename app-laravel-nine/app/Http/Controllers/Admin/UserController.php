@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exports\UserExport;
 use App\Http\Controllers\Controller;
-use App\Models\Employee;
 use App\Models\Role;
 use App\Models\User;
 use App\Rules\MatchOldPassword;
@@ -23,7 +22,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::query()->with('employee')->where('id', '!=', $request->user()->id);
+        $users = User::query()->where('id', '!=', $request->user()->id);
 
         // Filter
         if ($request->has('search')) {
@@ -60,7 +59,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'fullname'=> ['required', 'min:3'],
+            'username'=> ['required', 'unique:users,username', 'min:3'],
             'email'=> ['required', 'email', 'unique:users,email'],
             'password'=> ['required', 'confirmed'],
             'role'=> ['required', 'exists:roles,slug']
@@ -70,7 +69,7 @@ class UserController extends Controller
         try {
             
             $user = User::create([
-                'name'=> $request->fullname, // rtrim("{$request->firstname} {$request->lastname}"),
+                'username'=> $request->username, // rtrim("{$request->firstname} {$request->lastname}"),
                 'email'=> $request->email,
                 'password'=> $request->password
             ]);
@@ -103,10 +102,6 @@ class UserController extends Controller
     {
         $user = User::query()->with([
             'roles', 
-            'subscriptions',
-            'employee'=> function($q){
-                $q->with(['company', 'employeeType', 'employeeStatus']);
-            }, 
         ])
         ->find($user->id);
 
@@ -138,7 +133,6 @@ class UserController extends Controller
                 Rule::requiredIf($request->get('employee_id')), 
                 'exists:roles,slug'
             ],
-            'employee_id'=> ['nullable', 'exists:employees,id']
         ]);
 
         DB::beginTransaction();
@@ -159,13 +153,6 @@ class UserController extends Controller
             if ($request->has('role')) {
                 $guestRole = Role::whereSlug($request->role)->first();
                 $user->roles()->sync($guestRole);
-            }
-
-            // Sync employee
-            if ($request->has('employee_id')) {
-                $employee = Employee::find($request->employee_id);
-                abort_if(!$employee, 403, "Employee not found!");
-                $user->employee()->save($employee);
             }
             
             DB::commit();
@@ -248,56 +235,6 @@ class UserController extends Controller
         return (new UserExport([]))->download("user-export-{$timestamp}.xlsx");
     }
 
-    /**
-     * Create new user from Emmployee instance
-     * 
-     * @param Request $request
-     * @param Employee $employee
-     * @return mixed
-     */
-    public function createFromEmployee(Request $request, Employee $employee)
-    {
-        $this->authorize('create', new User);
-
-        if ($existing = User::whereEmail($employee->email)->first()) {
-            abort(403, "User with email {$existing->email} is exists!");
-        }
-
-        if (!$employee->employeeType) {
-            abort(403, "Edit this employee to own the employee type! And then try to re-create user!");
-        }
-
-        DB::beginTransaction();
-        try {
-
-            $user = User::create([
-                'name'=> rtrim("{$employee->first_name} {$employee->last_name}"),
-                'email'=> $employee->email,
-                'password'=> config('custom-config.default_password')
-            ]);
-
-            $employeeRole = $employee->employeeType->role;
-            $user->roles()->attach($employeeRole);
-
-            $employee->user()->associate($user)->save();
-            
-            $user->subscriptions()->attach($employee, [
-                'valid_until'=> Carbon::now()->copy()->addDays(30)
-            ]);
-            
-            DB::commit();
-
-            return response()->json([
-                'success'=> true,
-                'message'=> 'User has been created successfully.',
-                'data'=> $user
-            ]);
-
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            throw $th;
-        }
-    }
 
     /**
      * Update the specified resource in storage.

@@ -16,7 +16,7 @@
 				<p class="login-box-msg">Sign in to start your session</p>
 				<form @submit.prevent="userLogin">
 				<div class="input-group mb-3">
-					<input v-model="login.email" type="email" class="form-control" placeholder="Email" />
+					<input v-model="login.username" type="text" class="form-control" placeholder="Username or Email" />
 					<div class="input-group-append">
 						<div class="input-group-text">
 							<span class="fas fa-envelope"></span>
@@ -95,7 +95,7 @@ export default {
 		return {
 			appName: process.env.APP_NAME,
 			login: {
-				email: "",
+				username: "",
 				password: "",
 			},
 			loading: false

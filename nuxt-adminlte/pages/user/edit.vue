@@ -111,7 +111,7 @@
 				</div>
 			</div>
 
-			<div class="col-md-6">
+			<!-- <div class="col-md-6">
 				<div class="card card-info">
 					<div class="card-header">
 						<h3 class="card-title">Associated Employee</h3>
@@ -122,7 +122,6 @@
 								<div class="col-12 col-sm-12">
 									<div class="form-group">
 										<label>Employee</label>
-										<!-- :reduce="company => company.code" -->
 										<v-select 
 											@open="onOpenEmployees" @search="fetchEmployeeOptions" 
 											:options="employees"
@@ -141,7 +140,7 @@
 							</div>
 						</div>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>
@@ -167,7 +166,7 @@ export default {
 			}
 		});
 
-		const selectedEmployee = await $axios.get(`user-employee/${user.id}`).then((resp)=> {
+		const selectedEmployee = await $axios.get(`admin/users/${user.id}`).then((resp)=> {
 			if (resp.data.success) {
 				return [{
 					code: resp.data.data.id,

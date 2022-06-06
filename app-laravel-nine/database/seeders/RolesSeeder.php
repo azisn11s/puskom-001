@@ -35,26 +35,6 @@ class RolesSeeder extends Seeder
     {
         return collect([
             [
-                'name' => 'Medical Representative',
-                'slug' => 'medical-representative',
-            ],
-            [
-                'name' => 'Area Manager',
-                'slug' => 'area-manager',
-            ],
-            [
-                'name' => 'Sales Manager',
-                'slug' => 'sales-manager',
-            ],
-            [
-                'name' => 'Management',
-                'slug' => 'management',
-            ],
-            [
-                'name' => 'Admin',
-                'slug' => 'admin',
-            ],
-            [
                 'name' => 'Super Admin',
                 'slug' => 'super-admin',
             ]
