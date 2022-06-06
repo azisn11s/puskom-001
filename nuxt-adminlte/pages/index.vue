@@ -5,45 +5,19 @@
 		<!-- Small Boxes -->
 		<div class="row">
 			<!-- ./col -->
-			<div class="col-lg-3 col-6">
-				<!-- small box -->
+			<!-- <div class="col-lg-3 col-6">
 				<MyBox
 					:color="`purple`"
 					:icon="`user-tie`"
 					:url="{ name: 'employee.index' }"
 					:isLoading="loading.employee"
 				>
-					<h3>{{ counter.employee }}</h3>
+					<h3>Card</h3>
 					<p>Employees</p>
 				</MyBox>
-			</div>
+			</div> -->
 			<!-- ./col -->
-			<div class="col-lg-3 col-6">
-				<!-- small box -->
-				<MyBox
-					:color="`yellow`"
-					:icon="`user-md`"
-					:url="{ name: 'doctor.index' }"
-					:isLoading="loading.doctor"
-				>
-					<h3>{{ counter.doctor }}</h3>
-					<p>Doctors</p>
-				</MyBox>
-			</div>
-			<!-- ./col -->
-			<div class="col-lg-3 col-6">
-				<!-- small box -->
-				<MyBox
-					:color="`blue`"
-					:icon="`user-friends`"
-					:url="{ name: 'team.index' }"
-					:isLoading="loading.team"
-				>
-					<h3>{{ counter.team }}</h3>
-					<p>Teams</p>
-				</MyBox>
-			</div>
-			<!-- ./col -->
+			
 		</div>
 		<!-- End - Small Boxes -->
 

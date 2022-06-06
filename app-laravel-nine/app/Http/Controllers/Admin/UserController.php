@@ -27,7 +27,7 @@ class UserController extends Controller
         // Filter
         if ($request->has('search')) {
             $users->where('email', 'ilike', "%{$request->search}%")
-                ->orWhere('name', 'ilike', "%{$request->search}%");
+                ->orWhere('username', 'ilike', "%{$request->search}%");
         }
 
         // Order
@@ -122,7 +122,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $this->validate($request, [
-            'fullname'=> ['required', 'min:3'],
+            'username'=> ['required', 'min:3', 'unique:users,username,'.$user->id],
             'email'=> [
                 'required', 
                 'email', 
@@ -139,7 +139,7 @@ class UserController extends Controller
         try {
             
             $user->update([
-                'name'=> $request->fullname, // rtrim("{$request->firstname} {$request->lastname}"),
+                'username'=> $request->username, // rtrim("{$request->firstname} {$request->lastname}"),
                 'email'=> $request->email,
             ]);
 
