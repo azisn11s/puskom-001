@@ -6,6 +6,7 @@ use App\Exports\UserExport;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\UserDetail;
 use App\Rules\MatchOldPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -133,6 +134,19 @@ class UserController extends Controller
                 Rule::requiredIf($request->get('employee_id')), 
                 'exists:roles,slug'
             ],
+
+            // user_detail
+            'identity_number'=> ['required', 'min:5', 'integer'],
+            'first_name'=> ['required', 'min:3'],
+            'last_name'=> ['nullable', 'min:3'],
+            'gender'=> ['required', 'in:M,F'],
+            'birth_date'=> ['required', 'date'],
+            'birth_place'=> ['nullable', 'min:4'],
+            'religion'=> ['nullable'],
+            'phone_number'=> ['nullable', 'min:7'],
+            'full_address'=> ['nullable', 'min:3'],
+            'zip_code'=> ['nullable', 'max:10']
+            
         ]);
 
         DB::beginTransaction();
@@ -154,7 +168,29 @@ class UserController extends Controller
                 $guestRole = Role::whereSlug($request->role)->first();
                 $user->roles()->sync($guestRole);
             }
-            
+
+            $inputUserDetail = [
+                'identity_number'=> $request->identity_number,
+                'first_name'=> $request->first_name,
+                'last_name'=> $request->last_name,
+                'gender'=> $request->gender,
+                'birth_date'=> $request->birth_date,
+                'birth_place'=> $request->birth_place,
+                'religion'=> $request->religion,
+                'phone_number'=> $request->phone_number,
+                'full_address'=> $request->full_address,
+                'zip_code'=> $request->zip_code,
+            ];
+
+            if ($user->userDetail) {
+                $user->userDetail()->update($inputUserDetail);
+            }
+
+            if (!$user->userDetail) {
+                $newUserDetail = new UserDetail($inputUserDetail);
+                $user->userDetail()->associate($newUserDetail)->save();
+            }
+
             DB::commit();
 
             return response()->json([
