@@ -16,18 +16,18 @@
 						<div class="card-body">
 							<div class="form-group row">
 								<label for="inputEmail3" class="col-sm-3 col-form-label"
-									>Fullname</label
+									>Username</label
 								>
 								<div class="col-sm-8">
 									<input
-										v-model="form.fullname"
+										v-model="form.username"
 										type="text"
 										class="form-control"
-										id="fullname"
-										placeholder="Fullname" 
-										:class="{ 'is-invalid': form.errors.has('fullname') }"
+										id="username"
+										placeholder="username" 
+										:class="{ 'is-invalid': form.errors.has('username') }"
 									/>
-									<has-error :form="form" field="fullname"></has-error>
+									<has-error :form="form" field="username"></has-error>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -180,7 +180,7 @@ export default {
 		return {
 			listOfRoles,
 			form : new Form({
-				fullname: user.name,
+				username: user.username,
 				email: user.email,
 				role: '',
 				password: '',
