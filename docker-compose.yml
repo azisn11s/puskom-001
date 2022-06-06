@@ -1,0 +1,126 @@
+version: "3"
+
+services: 
+  # Webserver for Reverse proxy
+  nginx:
+    image: nginx:latest
+    restart: always
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "9003:9002"
+    command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+
+  # Redis session and queue management
+  redis:
+    restart: always
+    image: redis:3.2-alpine
+
+  #PHP Service
+  # nginxapp:
+  #   image: nginx:latest
+  #   restart: always
+  #   volumes:
+  #     - ./nginx/nginx-app.conf:/etc/nginx/nginx.conf:ro
+  #     - ./app-laravel:/var/www
+  #   command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+
+  # nginxapp1:
+  #   image: nginx:latest
+  #   restart: always
+  #   volumes:
+  #     - ./nginx/nginx-app-laravel8.conf:/etc/nginx/nginx.conf:ro
+  #     - ./app-laravel-nine:/var/www/app8
+  #   command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+
+  nginxapp2:
+    image: nginx:latest
+    restart: always
+    volumes:
+      - ./nginx/nginx-app-laravel9.conf:/etc/nginx/nginx.conf:ro
+      - ./app-laravel-nine:/var/www/app3
+    command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+
+  # app:
+  #   build: ./app-laravel/
+  #   image: upcoretech
+  #   restart: always
+  #   tty: true
+  #   environment:
+  #     CONTAINER_ROLE: app
+  #     SERVICE_NAME: app
+  #     SERVICE_TAGS: dev
+  #   working_dir: /var/www
+  #   command: "/bin/sh -c 'composer install && /usr/local/bin/start'"
+  #   volumes:
+  #     - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+  #     - ./app-laravel:/var/www
+
+  app3:
+    build: ./app-laravel-nine/
+    image: app3
+    restart: always
+    tty: true
+    environment:
+      CONTAINER_ROLE: app3
+      SERVICE_NAME: app3
+      SERVICE_TAGS: dev
+    working_dir: /var/www/app3
+    command: "/bin/sh -c 'composer install && /usr/local/bin/start'"
+    volumes:
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./app-laravel-nine:/var/www/app3
+
+  # cron:
+  #   build: ./app-laravel/
+  #   image: upcoretech
+  #   restart: always
+  #   tty: true
+  #   depends_on:
+  #     - "app"
+  #   environment:
+  #     CONTAINER_ROLE: scheduler
+  #     SERVICE_NAME: app
+  #     SERVICE_TAGS: dev
+  #   working_dir: /var/www
+  #   command: "/bin/sh -c '/usr/local/bin/start'"
+  #   volumes:
+  #     - ./app-laravel:/var/www
+
+  # service:
+  #   build: ./app-laravel/
+  #   image: upcoretech
+  #   container_name: service-upcoretech
+  #   restart: always
+  #   tty: true
+  #   depends_on:
+  #     - "app"
+  #   environment:
+  #     CONTAINER_ROLE: queue
+  #     SERVICE_NAME: app
+  #     SERVICE_TAGS: dev
+  #   working_dir: /var/www
+  #   command: "/bin/sh -c '/usr/local/bin/start'"
+  #   volumes:
+  #     - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+
+  nuxt:
+    build: ./nuxt-adminlte/
+    restart: always
+    volumes:
+      - ./nuxt-adminlte:/src
+    command: 
+      "/bin/sh -c 'npm install && npm run build && npm run start'"
+      # "/bin/sh -c 'npm install && npm run dev'"
+  
+  postgres:
+    image: postgres
+    environment: 
+      - POSTGRES_PASSWORD=passwordUpcoretech-001
+    ports: 
+      - "5433:5432"
+    volumes: 
+      - upcore-data:/var/lib/postgresql/data
+
+volumes: 
+  upcore-data:

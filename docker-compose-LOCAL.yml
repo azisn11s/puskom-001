@@ -1,0 +1,64 @@
+version: "3"
+
+services: 
+  # Webserver for Reverse proxy
+  nginx:
+    image: nginx:latest
+    restart: always
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "9004:9002"
+    command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+
+  # Redis session and queue management
+  redis:
+    restart: always
+    image: redis:3.2-alpine
+
+  nginxapp2:
+    image: nginx:latest
+    restart: always
+    volumes:
+      - ./nginx/nginx-app-laravel9.conf:/etc/nginx/nginx.conf:ro
+      - ./app-laravel-nine:/var/www/app3
+    command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+
+  app3:
+    build: ./app-laravel-nine/
+    image: app3
+    restart: always
+    tty: true
+    environment:
+      CONTAINER_ROLE: app3
+      SERVICE_NAME: app3
+      SERVICE_TAGS: dev
+    working_dir: /var/www/app3
+    command: "/bin/sh -c 'rm -rf vendor composer.lock && composer install && php artisan migrate && php artisan db:seed && /usr/local/bin/start'"
+    # command: "/bin/sh -c 'composer install && /usr/local/bin/start'"
+    volumes:
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./app-laravel-nine:/var/www/app3
+
+
+  nuxt:
+    build: ./nuxt-adminlte/
+    restart: always
+    volumes:
+      - ./nuxt-adminlte:/src
+    command: 
+      # "/bin/sh -c 'npm install && npm run build && npm run start'"
+      "/bin/sh -c 'npm install && npm run dev'"
+  
+  postgres:
+    image: postgres
+    environment: 
+      - POSTGRES_DB=db_test
+      - POSTGRES_PASSWORD=password
+    ports: 
+      - "5436:5432"
+    volumes: 
+      - app-data:/var/lib/postgresql/data
+
+volumes: 
+  app-data:
