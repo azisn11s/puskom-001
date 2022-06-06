@@ -13,9 +13,14 @@ This project is very easy to install and deploy in a Docker container.
 
 By default, the Docker will expose port `9004`, so change this within the `docker-compose.yml` and several `Dockerfile` if necessary. When ready, simply use the Dockerfile to
 build the image.
+
+- In the *app-laravel-nine* directory, copy `.env.example` to `.env`
+
+- In the *nuxt-adminlte* directory, copy `.env.example` to `.env`, then edit `.env` 
+
 ##### _in the root project-directory_
 ```sh
-docker-compose up -d --build
+$ docker-compose up -d --build
 ```
 
 This will create and run the app images and pull in the necessary dependencies.
