@@ -87,8 +87,9 @@
 						</div>
 						<!-- /.col -->
 						<div class="col-4">
-							<button type="submit" class="btn btn-primary btn-block">
-								Register
+							<button type="submit" class="btn btn-primary btn-block" :disabled="loading">
+								<span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+								<span v-if="!loading">Register</span>
 							</button>
 						</div>
 						<!-- /.col -->
@@ -129,6 +130,7 @@ export default {
 	},
 	data() {
 		return {
+			loading: false,
 			register: new Form({
 				username: "",
 				email: "",
@@ -140,6 +142,7 @@ export default {
 	methods: {
 		async userRegister() {
 			try {
+				this.loading = true;
                 let response = await this.$axios.post(`/signup`, this.register);
 
 				this.$auth.setUserToken(response.data.access_token).then(()=> {
@@ -157,6 +160,8 @@ export default {
 							}
 						},
 					});		
+				
+					this.loading = false;
 					
 					this.$router.push({ path: '/' });
 				});              
@@ -175,6 +180,9 @@ export default {
 					iconPack: "fontawesome",
 					duration: 5000,
 				});	
+				
+				this.loading = false;
+
 			}
 
 			

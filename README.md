@@ -1,4 +1,4 @@
-# Puskom
+# Laravel + NuxtJS
 #### _
 
 ## Tech
